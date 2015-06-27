@@ -1,0 +1,12 @@
+extends layout
+
+block additionalLibs
+  script(src='./javascripts/libs/angular.min.js')
+  script(src='./javascripts/pics.global.js')
+
+block content
+  div(ng-app='picsGlobal' ng-controller='mainController')
+    h1= title
+    p Welcome to #{title}
+    p This page is still work in progress, check later to see how it grows!
+    p(class='smallText') {{test}}
