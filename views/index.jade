@@ -1,8 +1,12 @@
 extends layout
 
 block additionalLibs
-  <!-- bower:js -->
-  <!-- endbower -->
+  // bower:js
+  script(src='../bower_components/es5-shim/es5-shim.js')
+  script(src='../bower_components/angular/angular.js')
+  script(src='../bower_components/angular-route/angular-route.js')
+  script(src='../bower_components/angular-file-upload/angular-file-upload.js')
+  // endbower
 
 block content
   div(ng-app='picsGlobal' ng-controller='mainController')
