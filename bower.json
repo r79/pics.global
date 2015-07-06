@@ -1,0 +1,30 @@
+{
+  "name": "pics.global",
+  "version": "0.0.1",
+  "homepage": "www.pics.global",
+  "authors": [
+    "r79 <r@r79.io>"
+  ],
+  "description": "Frontend module for pics.global",
+  "main": "javascripts/pics.global.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "pics.global",
+    "pics"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.1",
+    "angular-route": "~1.4.1"
+  }
+}
