@@ -6,7 +6,8 @@ module.exports = function (grunt) {
             task: {
                 src: [
                     'views/*.jade'
-                ]
+                ],
+                includeSelf: true
             }
         }
     });

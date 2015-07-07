@@ -6,7 +6,7 @@
     "r79 <r@r79.io>"
   ],
   "description": "Frontend module for pics.global",
-  "main": "public/javascripts/pics.global.js",
+  "main": "public/javascripts/picsglobal.js",
   "moduleType": [
     "node"
   ],
