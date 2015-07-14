@@ -10,7 +10,8 @@ router.use(multer({inMemory: true}));
 
 /* GET users listing. */
 router.post('/', function(req, res, next) {
-  imageQueueServvice.putImageInQueue(req.files.testImage);
+  console.log(req.files);
+  imageQueueServvice.putImageInQueue(req.files.image);
   res.end("file uploaded");
 });
 
