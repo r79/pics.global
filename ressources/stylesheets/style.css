@@ -12,6 +12,7 @@ a {
 }
 
 .button {
+  margin-left: 223px;
   display: inline-block;
   -webkit-border-radius: 28;
   -moz-border-radius: 28;

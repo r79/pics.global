@@ -15,7 +15,19 @@ router.post('/', function(req, res, next) {
 });
 
 router.get('/current', function(req, res, next) {
-  imageQueueService.getCurrentImageReadStream().pipe(res);
+  res.set({
+    'Pragma-directive': 'no-cache',
+    'Cache-directive': 'no-cache',
+    'Cache-control': 'no-cache',
+    'Pragma': 'no-cache',
+    'expires': '0'
+  });
+  var readStream;
+  if(readStream = imageQueueService.getCurrentImageReadStream()) {
+      readStream.pipe(res);
+  } else {
+    res.status(503).end('no images in queue');
+  }
 });
 
 module.exports = router;

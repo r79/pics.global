@@ -10,7 +10,12 @@ module.exports = function (grunt) {
                     'views/*.jade'
                 ],
                 //cwd: '/ressources',
-                includeSelf: true
+                includeSelf: true,
+                overrides: {
+                    'socket.io-client': {
+                        main: 'socket.io.js'
+                    }
+                }
             }
         }
     });

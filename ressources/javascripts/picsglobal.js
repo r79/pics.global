@@ -1,4 +1,4 @@
-var app = angular.module('picsGlobal', ['ngFileUpload', 'ngWebSocket'])
+var app = angular.module('picsGlobal', ['ngFileUpload'])
 
     .controller('sampleTextController', function ($scope, Upload) {
         $scope.test = "It works with angular! And NodeJS!";
@@ -20,39 +20,39 @@ var app = angular.module('picsGlobal', ['ngFileUpload', 'ngWebSocket'])
                         fileFormDataName: 'image'
                     }).progress(function (evt) {
                         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                        $scope.log = 'progress: ' + progressPercentage + '% ' +
-                            evt.config.file.name + '\n' + $scope.log;
                     }).success(function (data, status, headers, config) {
-                        $scope.log = 'file: ' + config.file.name + ', Response: ' + JSON.stringify(data) + '\n' + $scope.log;
+                        
                     });
                 }
             }
         };
     })
 
-    .controller('canvasController', function($http, $websocket) {
+    .controller('canvasController', function($http) {
         var canvas = angular.element(currentImage)[0];
         var ctx = canvas.getContext('2d');
+        var socket = io.connect();
         var img;
-        var dataStream = $websocket('wss://localhost:1337');
 
-        dataStream.onOpen(function () {
-            console.log('ws Connection established');
-        });
-
-        dataStream.onError(function () {
-           console.log('ws Connection error');
-        });
-
-        var drawNewImage = function () {
-            img = new Image;
+        var drawNewImage = function (noImages) {
+            img = new Image();
 
             img.onload = function () {
                 drawImageScaled(this, ctx)
             };
 
-            img.src = './image/current';
+            img.src = './image/current?thisAttributeIsOnlyToLetAllBrowsersIgnoreCacheAndDoesNothingFunctionalAtAllOtherwise=' + Date.now();
+            img.onerror = function () {
+                console.log('error occured');
+                this.src = './ressources/noimges.png';
+            }
         };
+
+        drawNewImage();
+
+        socket.on('imageCycle', function () {
+            drawNewImage();
+        });
 
         //I TL;DR copy pasted this.
         // thx to GameAlchemist@Stackoverflow: http://stackoverflow.com/a/23105310
