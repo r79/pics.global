@@ -23,3 +23,8 @@ a {
   border: solid #000000 2px;
   text-decoration: none;
 }
+
+#currentImage {
+  height:400px;
+  width: 600px;
+}

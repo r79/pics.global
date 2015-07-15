@@ -7,6 +7,7 @@ block additionalLibs
   script(src='../ressources/bower_components/angular-route/angular-route.js')
   script(src='../ressources/bower_components/angular-file-upload/angular-file-upload.js')
   script(src='../ressources/bower_components/ng-file-upload/ng-file-upload.js')
+  script(src='../ressources/bower_components/angular-websocket/angular-websocket.min.js')
   script(src='../ressources/javascripts/picsglobal.js')
   // endbower
 
@@ -14,11 +15,18 @@ block additionalLibs
   // endbower
 
 block content
-  div(ng-app='picsGlobal' ng-controller='mainController')
+  div(ng-app='picsGlobal')
     h1= title
     p Welcome to #{title}
     p This page is still work in progress, check later to see how it grows!
-    p(class='smallText') {{test}}
-    div(class="button" ngf-select ngf-change='upload($files)') Select File
-    p Upload Log:
-    pre {{log}}
+
+    div(ng-controller='sampleTextController')
+      p(class='smallText') {{test}}
+
+    div(ng-controller='imageUploadController')
+      div(class="button" ngf-select ngf-change='upload($files)') Select File
+      p Upload Log:
+      pre {{log}}
+
+    div(ng-controller='canvasController')
+      canvas(id='currentImage')

@@ -5,43 +5,59 @@ var fs = require('fs');
 var streamifier = require('streamifier');
 
 var imageQueue = [];
-var backupFileWriteStream;
+var imageController = require('../routes/image.js');
+var webSocketService = require('./webSocketService.js');
+var currentImage;
 
-//Constructor
-(function() {
-    if(fs.exists("./backupImageQueue")){
-        imageQueue = JSON.parse(fs.readFileSync('./backupImageQueue'));
-    } else {
-        backupFileWriteStream = fs.createWriteStream('./backupImageQueue');
-    }
-})();
+var UPLOAD_FOLDER = './hiddenFileUploads/';
+var BACKUP_FILE_PATH = './backupImageQueue';
+
 
 var putImageInQueue = function(imageObject){
-    var outputFileStream = fs.createWriteStream('./hiddenFileUploads/' + imageObject.originalname);
+    console.log('added Image: ' + imageObject.originalName);
+    var outputFileStream = fs.createWriteStream(UPLOAD_FOLDER + imageObject.originalname);
     streamifier.createReadStream(imageObject.buffer).pipe(outputFileStream);
     imageQueue.push({
-        name: imageObject.originalname,
-        extension: imageObject.extension
+        name: imageObject.originalname
     });
+    console.log('added Image: ' + imageObject.originalName);
 };
 
-//queueInterval
-setInterval(function () {
+var getCurrentImageReadStream = function () {
+    return fs.createReadStream(UPLOAD_FOLDER + currentImage.name);
+};
+
+var nextImage = function () {
     console.log('new image interval');
-    var currentImage = imageQueue.shift();
-    if(!currentImage) {
+    var topOfQueue = imageQueue.shift();
+    if(!topOfQueue) {
         console.log('queue is empty!');
         return;
     }
-    var readStream = fs.createReadStream('./hiddenFileUploads/' + currentImage.name);
-    var writeStream = fs.createWriteStream('./ressources/currentImage.' + currentImage.extension);
-    readStream.pipe(writeStream);
-}, 13370);
+    if(currentImage) {
+        fs.unlink(UPLOAD_FOLDER + currentImage.name);
+    }
+    currentImage = topOfQueue;
+    queueBackup();
+};
 
-
-setInterval(function() {
+var queueBackup = function() {
     console.log('created Queue Backup');
-    streamifier.createReadStream(JSON.stringify(imageQueue)).pipe(backupFileWriteStream);
-}, 60000);
+    var backupFileStream = fs.createWriteStream(BACKUP_FILE_PATH);
+    streamifier.createReadStream(JSON.stringify(imageQueue)).pipe(backupFileStream);
+};
+
+
+//Constructor
+(function() {
+    if(fs.existsSync(BACKUP_FILE_PATH)){
+        imageQueue = JSON.parse(fs.readFileSync(BACKUP_FILE_PATH));
+        console.log('restored previous state');
+        nextImage();
+    }
+})();
+
+setInterval(nextImage, 13370);
 
 exports.putImageInQueue = putImageInQueue;
+exports.getCurrentImageReadStream = getCurrentImageReadStream;
