@@ -4,10 +4,18 @@ module.exports = function (grunt) {
     grunt.initConfig({
         wiredep: {
             task: {
+                directory: './ressources/bower_components',
+                bowerJson: require('./ressources/bower.json'),
                 src: [
                     'views/*.jade'
                 ],
-                includeSelf: true
+                //cwd: '/ressources',
+                includeSelf: true,
+                overrides: {
+                    'socket.io-client': {
+                        main: 'socket.io.js'
+                    }
+                }
             }
         }
     });
