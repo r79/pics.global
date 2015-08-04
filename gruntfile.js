@@ -4,17 +4,17 @@ module.exports = function (grunt) {
     grunt.initConfig({
         wiredep: {
             task: {
-                // Point to the files that should be updated when
-                // you run `grunt wiredep`
+                directory: './ressources/bower_components',
+                bowerJson: require('./ressources/bower.json'),
                 src: [
-                    'views/**/*.jade',   // .jade support...
+                    'views/*.jade'
                 ],
-
-                options: {
-                    // See wiredep's configuration documentation for the options
-                    // you may pass:
-
-                    // https://github.com/taptapship/wiredep#configuration
+                //cwd: '/ressources',
+                includeSelf: true,
+                overrides: {
+                    'socket.io-client': {
+                        main: 'socket.io.js'
+                    }
                 }
             }
         }

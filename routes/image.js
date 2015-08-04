@@ -4,14 +4,30 @@ var router = express.Router();
 var multer = require('multer');
 var fs = require('fs');
 var streamifier = require('streamifier');
-var imageQueueServvice = require('../services/imageQueueService');
+var imageQueueService = require('../services/imageQueueService');
 
 router.use(multer({inMemory: true}));
 
 /* GET users listing. */
 router.post('/', function(req, res, next) {
-  imageQueueServvice.putImageInQueue(req.files.testImage);
+  imageQueueService.putImageInQueue(req.files.image);
   res.end("file uploaded");
+});
+
+router.get('/current', function(req, res, next) {
+  res.set({
+    'Pragma-directive': 'no-cache',
+    'Cache-directive': 'no-cache',
+    'Cache-control': 'no-cache',
+    'Pragma': 'no-cache',
+    'expires': '0'
+  });
+  var readStream;
+  if(readStream = imageQueueService.getCurrentImageReadStream()) {
+      readStream.pipe(res);
+  } else {
+    res.status(503).end('no images in queue');
+  }
 });
 
 module.exports = router;
