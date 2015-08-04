@@ -17,7 +17,7 @@ var app = angular.module('picsGlobal', ['ngFileUpload'])
                     }).progress(function (evt) {
                         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     }).success(function (data, status, headers, config) {
-
+                        alert('successfully uploaded image, position in queue: ' + data);
                     });
                 }
             }

@@ -3,3 +3,4 @@ hiddenFileUploads/
 *.iml
 bower_components/
 .idea/
+backupImageQueue
