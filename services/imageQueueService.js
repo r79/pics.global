@@ -21,10 +21,11 @@ var putImageInQueue = function (imageObject) {
     var imageName = Date.now();
     var outputFileStream = fs.createWriteStream(UPLOAD_FOLDER + imageName);
     streamifier.createReadStream(imageObject.buffer).pipe(outputFileStream);
-    imageQueue.push(imageName.toString());
+    var queuelength = imageQueue.push(imageName.toString());
     if(!cycle) {
         nextImage();
     }
+    return queuelength;
 };
 
 var getCurrentImageReadStream = function () {
