@@ -1,10 +1,18 @@
 var io = require('socket.io')();
 var logger = require('../services/logger.js');
+var pjson = require('../package.json');
 
 var usercount = 0;
 
 io.on('connection', function(socket) {
    usercount++;
+
+   socket.emit('initialData',{
+      version: pjson.version,
+      userCount: usercount,
+      currentImageInfo: '1234s'
+   });
+
    socket.on('disconnect', function () {
       usercount--;
    });

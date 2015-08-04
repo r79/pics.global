@@ -24,10 +24,9 @@ var app = angular.module('picsGlobal', ['ngFileUpload'])
         };
     })
 
-    .controller('canvasController', function ($http) {
+    .controller('canvasController', function ($http, socket) {
         var canvas = angular.element(currentImage)[0];
         var ctx = canvas.getContext('2d');
-        var socket = io.connect();
         var img;
 
         var drawNewImage = function (noImages) {
@@ -46,6 +45,7 @@ var app = angular.module('picsGlobal', ['ngFileUpload'])
         };
 
         drawNewImage();
+
         socket.on('imageCycle', function () {
             drawNewImage();
         });
@@ -65,6 +65,15 @@ var app = angular.module('picsGlobal', ['ngFileUpload'])
         }
     })
 
-    .controller('informationController', function () {
+    .controller('informationController', function ($scope, socket) {
+        socket.on('initialData', function (data) {
+            $scope.informations = data;
+            $scope.informations.userCount = $scope.informations.userCount == 1 ? 'currently you are the only one ' : $scope.informations.userCount + ' people ';
+            $scope.$apply();
+        });
+    })
 
-    });
+    .service('socket', function () {
+        return io.connect();
+    })
+;
