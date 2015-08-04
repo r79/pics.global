@@ -17,7 +17,7 @@ var app = angular.module('picsGlobal', ['ngFileUpload'])
                     }).progress(function (evt) {
                         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     }).success(function (data, status, headers, config) {
-
+                        alert('successfully uploaded image, position in queue: ' + data);
                     });
                 }
             }
@@ -63,4 +63,8 @@ var app = angular.module('picsGlobal', ['ngFileUpload'])
             ctx.drawImage(img, 0, 0, img.width, img.height,
                 centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
         }
+    })
+
+    .controller('informationController', function () {
+
     });

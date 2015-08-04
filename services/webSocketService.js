@@ -1,15 +1,16 @@
 var io = require('socket.io')();
+var logger = require('../services/logger.js');
 
-var sendNextImage = function () {
-
-};
+var usercount = 0;
 
 io.on('connection', function(socket) {
-   console.log('A user connected');
+   usercount++;
+   socket.on('disconnect', function () {
+      usercount--;
+   });
 });
 
 var sendImageCycle = function () {
-   console.log('sending current image');
    io.emit('imageCycle', '');
 };
 
@@ -17,3 +18,11 @@ module.exports = {
    sendImageCycle: sendImageCycle,
    io: io
 };
+
+
+var logUsercount = function () {
+   logger.log("current usercount: " + usercount);
+};
+logUsercount();
+
+setInterval(logUsercount, 60000);
