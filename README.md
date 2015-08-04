@@ -8,6 +8,7 @@ repo for pics.global. DO NOT SHARE WITHOUT PERMIT! Always work on Dev, do not to
 - npm install nodemon -g
 
 - Pull project
+- go to project dir
 - npm install
 - cd ressources
 - bower install
