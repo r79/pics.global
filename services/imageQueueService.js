@@ -5,6 +5,7 @@ var streamifier = require('streamifier');
 //project modules
 var imageController = require('../routes/image.js');
 var webSocketService = require('../services/webSocketService.js');
+var logger = require('../services/logger.js');
 
 //static variables
 var UPLOAD_FOLDER = './hiddenFileUploads/';
@@ -33,10 +34,8 @@ var getCurrentImageReadStream = function () {
 };
 
 var nextImage = function () {
-    console.log('cycling images...');
-
     if (imageQueue.length <= 1) {
-        console.log('queue is empty, keeping current image');
+        logger.log('queue is empty, keeping current image');
         cycle = undefined;
     } else {
         fs.unlink(UPLOAD_FOLDER + imageQueue.shift());
@@ -48,28 +47,34 @@ var nextImage = function () {
 };
 
 var queueBackup = function () {
-    console.log('created Queue Backup' + JSON.stringify(imageQueue));
     var backupFileStream = fs.createWriteStream(BACKUP_FILE_PATH);
     streamifier.createReadStream(JSON.stringify(imageQueue)).pipe(backupFileStream);
 };
+
+var logQueueSize = function () {
+    logger.log("queuesize: " + imageQueue.length);
+};
+
+setInterval(logQueueSize, 60000);
 
 //Constructor
 (function () {
     if (fs.existsSync(UPLOAD_FOLDER)) {
         if (fs.existsSync(BACKUP_FILE_PATH)) {
             imageQueue = JSON.parse(fs.readFileSync(BACKUP_FILE_PATH));
-            console.log('restored previous state');
+            logger.log('restored previous state');
             var files = fs.readdirSync(UPLOAD_FOLDER);
             files.forEach(function (file) {
                 if (imageQueue.indexOf(file) === -1) {
                     fs.unlink(UPLOAD_FOLDER + file);
                 }
             });
-            console.log('cleaned up');
         }
     } else {
         fs.mkdir(UPLOAD_FOLDER);
     }
+
+    logQueueSize();
 
     nextImage();
 })();

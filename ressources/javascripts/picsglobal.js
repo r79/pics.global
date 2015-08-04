@@ -63,4 +63,8 @@ var app = angular.module('picsGlobal', ['ngFileUpload'])
             ctx.drawImage(img, 0, 0, img.width, img.height,
                 centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
         }
+    })
+
+    .controller('informationController', function () {
+
     });
