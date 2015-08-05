@@ -3,6 +3,7 @@ var logger = require('../services/logger.js');
 var pjson = require('../package.json');
 
 var usercount = 0;
+var currentImageTimestamp = Date.now();
 
 io.on('connection', function(socket) {
    usercount++;
@@ -10,7 +11,7 @@ io.on('connection', function(socket) {
    socket.emit('initialData',{
       version: pjson.version,
       userCount: usercount,
-      currentImageInfo: '1234s'
+      currentImageTimestamp: currentImageTimestamp
    });
 
    socket.on('disconnect', function () {
@@ -19,14 +20,9 @@ io.on('connection', function(socket) {
 });
 
 var sendImageCycle = function () {
+   currentImageTimestamp = Date.now();
    io.emit('imageCycle', '');
 };
-
-module.exports = {
-   sendImageCycle: sendImageCycle,
-   io: io
-};
-
 
 var logUsercount = function () {
    logger.log("current usercount: " + usercount);
@@ -34,3 +30,9 @@ var logUsercount = function () {
 logUsercount();
 
 setInterval(logUsercount, 60000);
+
+module.exports = {
+   sendImageCycle: sendImageCycle,
+   io: io
+};
+

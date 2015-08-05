@@ -37,6 +37,7 @@ var nextImage = function () {
     if (imageQueue.length <= 1) {
         logger.log('queue is empty, keeping current image');
         cycle = undefined;
+        return;
     } else {
         fs.unlink(UPLOAD_FOLDER + imageQueue.shift());
         cycle = setTimeout(nextImage, 13370);
