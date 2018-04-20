@@ -1,5 +1,7 @@
 # pics.global
-repo for pics.global. DO NOT SHARE WITHOUT PERMIT! Always work on Dev, do not touch master
+This Project is more of a legacy and hasn't been running anymore for a long time now. It's sort of a PoC to make something fun based on canvas, node and websockets. It did run for a bit, but never picked up any speed.
+
+Maybe I'll revive it someday, maybe...
 
 ## Dev Setup
 - install node && npm
